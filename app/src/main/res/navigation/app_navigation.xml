@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/splashScreenFragment">
+
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.weathersettest.presentation.home.HomeFragment"
+        android:label="fragment_storage_containers"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_home_to_detailWeatherFragment"
+            app:destination="@id/detailWeatherFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.example.weathersettest.presentation.splash.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_splashScreenFragment_to_home"
+            app:destination="@id/home" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailWeatherFragment"
+        android:name="com.example.weathersettest.presentation.detail.DetailWeatherFragment"
+        android:label="DetailWeatherFragment"
+        tools:layout="@layout/fragment_detail_weather"
+        />
+    <dialog
+        android:id="@+id/searchFragment"
+        android:name="com.example.weathersettest.presentation.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"
+        />
+
+</navigation>
