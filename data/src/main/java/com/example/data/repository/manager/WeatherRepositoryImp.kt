@@ -26,7 +26,8 @@ class WeatherRepositoryImp @Inject constructor(
     private val localToRepository: MappingWeatherLocalToRepository,
     private val netWorkToRepository: MappingWeatherNetWorkToRepository
 ) : WeatherRepository {
-    private var searchedWeatherCity: WeatherLocalModel?=null
+    private var searchedWeatherCity:WeatherLocalModel?=null
+    private var citys= mutableListOf<WeatherModel>()
     override suspend fun loadWeather(
         apiKey: String,
         cityNumber: Int?,
@@ -45,17 +46,19 @@ class WeatherRepositoryImp @Inject constructor(
             cityName
         ).collect {
             it?.let {
-                    localWeatherManager.saveWeather(remoteToLocal.mapDomainToDTO(it))
+                citys += it
+                if (citys.size == cityNumber){
+                    localWeatherManager.saveListWeather(remoteToLocal.mapDomainToDTO(citys))
                     delay(100)
                     send(DataState.Success(true))
-
+                    citys.clear()
+                }
             } ?: kotlin.run {
                 send(DataState.Error())
             }
         }
         awaitClose()
     }
-
     override suspend fun loadWeatherByCityName(
         apiKey: String,
         language: String?,
