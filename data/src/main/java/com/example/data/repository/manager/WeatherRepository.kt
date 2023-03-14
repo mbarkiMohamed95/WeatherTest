@@ -27,5 +27,6 @@ interface WeatherRepository {
     suspend fun loadWeatherFromLocal(): DataState<List<WeatherRepositoryModel>>
 
     suspend fun loadWeatherByNameCityFromLocal(cityName: String): WeatherRepositoryModel
+    suspend fun saveWeatherCity()
 
 }

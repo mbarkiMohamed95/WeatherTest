@@ -107,6 +107,10 @@ class WeatherRepositoryImp @Inject constructor(
         return localToRepository.mapDomainToDTO(localWeatherManager.loadWeatherByNameCityFromLocal(cityName))
     }
 
-
+    override suspend fun saveWeatherCity() {
+        searchedWeatherCity?.let {
+            localWeatherManager.saveWeather(it)
+        }
+    }
 
 }
