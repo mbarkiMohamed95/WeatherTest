@@ -19,6 +19,6 @@ fun loadImage(imageName: String, context: Context): Drawable? {
 }
 
 fun convertTimestamp(time: Int): String {
-    val simpleDate = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+    val simpleDate = SimpleDateFormat("hh:mm")
     return simpleDate.format(Date())
 }
