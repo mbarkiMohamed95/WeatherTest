@@ -7,7 +7,9 @@ import com.example.weathersettest.domain.loadWeather.dto.MappingWeatherRepositor
 import com.example.weathersettest.domain.loadWeather.model.WeatherUiModel
 import com.example.weathersettest.BuildConfig
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import java.util.*
@@ -32,6 +34,27 @@ class LoadWeatherUsesCaseImp @Inject constructor(
 
     }
 
+    override suspend fun loadWeathersByCityName(cityName: String): Flow<DataState<List<WeatherUiModel>>> =
+        callbackFlow {
+            repository.loadWeatherByCityName(
+                BuildConfig.apikey,
+                cityName = cityName,
+                currentTime = System.currentTimeMillis() / 1000,
+                language = Locale.getDefault().language
+            ).collect {
+                when (it) {
+                    is DataState.Success -> {
+                        var res = listOf(repositoryToUi.mapDomainToDTO(it.data))
+                        send(DataState.Success(res))
+                    }
+                    is DataState.Error -> {
+                        send(it)
+                    }
+                    else -> {}
+                }
+            }
+            awaitClose()
+        }
 
     override suspend fun loadWeatherFromLocalAsFlow(): Flow<DataState<List<WeatherUiModel>>> =
         flow {
@@ -43,16 +66,16 @@ class LoadWeatherUsesCaseImp @Inject constructor(
                     is DataState.Error -> {
                         emit(it)
                     }
-                    else->{
-
-                    }
+                    else -> {}
                 }
             }
         }
 
-
     override fun checkLocationPermissions(): Boolean =
         locationManagerInteraction.checkLocationPermissions()
 
+    override suspend fun saveWeatherCity() {
+        repository.saveWeatherCity()
+    }
 
 }
