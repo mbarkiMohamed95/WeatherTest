@@ -1,0 +1,22 @@
+<resources>
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+
+    <!--Dark theme no actionbar-->
+    <style name="AppTheme.DarkTheme_NoActionBar" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/darkTheme_colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorSecondary">@color/darkTheme_colorAccent</item>
+
+        <item name="android:textColorPrimary">@color/darkTheme_colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/darkTheme_colorSecondaryText</item>
+        <item name="android:windowBackground">@color/darkTheme_colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/darkTheme_colorPrimaryText</item>
+        <item name="android:statusBarColor">@color/darkTheme_colorPrimaryDark</item>
+
+    </style>
+</resources>
