@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherSetTest</string>
+    <string name="home_title">List des villes</string>
+
 </resources>
