@@ -34,7 +34,7 @@ object TestAppModule {
 
     @Provides
     @Singleton
-    @Named("test_dao")
+    @Named("test_t")
     fun provideLocalDataBaseWeatherTest(@Named("test_dao") weatherDao: WeatherDao) = LocalDataBaseWeatherTest(weatherDao)
 
 

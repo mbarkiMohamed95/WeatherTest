@@ -15,7 +15,7 @@ android {
         minSdk 24
         targetSdk 33
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.data.HiltTestRunner"
         // Replace com.example.android.dagger with your class path.
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -37,6 +37,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    hilt {
+        enableTransformForLocalTests = true
     }
 }
 
@@ -76,16 +79,14 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp3Version"
 
     // Local Unit Tests
-    implementation "androidx.test:core:1.2.0"
+    implementation "androidx.test:core:1.5.0"
     testImplementation "com.google.truth:truth:1.0.1"
-    def arch_version = "2.1.0"
+    def arch_version = "2.2.0"
     testImplementation "androidx.arch.core:core-testing:$arch_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$arch_version"
     testImplementation "org.robolectric:robolectric:4.3.1"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.2.1"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.2.1"
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
     androidTestImplementation "com.google.truth:truth:1.0.1"
     testImplementation "com.google.truth:truth:1.0.1"
-
 }
