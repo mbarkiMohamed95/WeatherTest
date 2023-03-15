@@ -42,7 +42,7 @@ class LoadWeatherUsesCaseImp @Inject constructor(
         locationManagerInteraction.getCurrentLocation(coroutineScope) { location ->
             listWorkManagerModel += UpdateWeatherWMModel(location.latitude, location.longitude)
             delay(300)
-            setUpUploadManagerWorker.setUpWorkerDownloadChain(listWorkManagerModel,coroutineScope)
+            setUpUploadManagerWorker.setUpWorkerDownloadChain(listWorkManagerModel)
         }
 
     }

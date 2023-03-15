@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.example.data.repository.manager.WeatherRepository
 import com.example.weathersettest.BuildConfig
@@ -13,8 +14,6 @@ import com.example.weathersettest.tools.appConst.AppConst.LATITUDE_KEY
 import com.example.weathersettest.tools.appConst.AppConst.LONGITUDE_KEY
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.launchIn
 import java.util.*
 
 @HiltWorker
@@ -25,7 +24,7 @@ class UpdateWeathersWorkManager @AssistedInject constructor(
 ) : CoroutineWorker(ctx, params) {
 
     @SuppressLint("RestrictedApi")
-    override suspend fun doWork(): Result = coroutineScope {
+    override suspend fun doWork(): Result  {
         var lat = if (inputData.getDouble(LATITUDE_KEY, 0.0) == 0.0) null else inputData.getDouble(
             LATITUDE_KEY,
             0.0
@@ -48,8 +47,10 @@ class UpdateWeathersWorkManager @AssistedInject constructor(
             longitude = long,
             language = Locale.getDefault().language,
             currentTime = System.currentTimeMillis() / 1000,
-            cityName = cityName
-        ).launchIn(this)
-        Result.success()
+            cityName = cityName,
+        ){
+            WorkManager.getInstance(ctx).cancelAllWork()
+        }
+       return Result.success()
     }
 }

@@ -12,8 +12,9 @@ interface WeatherRepository {
         longitude: Double? = null,
         language: String? = null,
         currentTime: Long? = null,
-        cityName: String? = null
-    ): Flow<DataState<Boolean>>
+        cityName: String? = null,
+        callback:(Boolean)->Unit
+    )
 
     suspend fun loadWeatherByCityName(
         apiKey: String,

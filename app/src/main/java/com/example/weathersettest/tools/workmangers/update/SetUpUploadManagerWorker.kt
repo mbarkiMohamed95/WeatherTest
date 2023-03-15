@@ -5,7 +5,5 @@ import kotlinx.coroutines.CoroutineScope
 
 interface SetUpUploadManagerWorker {
     suspend fun setUpWorkerDownloadChain(
-        listPlace: List<UpdateWeatherWMModel>,
-        coroutineScope: CoroutineScope
-    )
+        listPlace: List<UpdateWeatherWMModel>)
 }

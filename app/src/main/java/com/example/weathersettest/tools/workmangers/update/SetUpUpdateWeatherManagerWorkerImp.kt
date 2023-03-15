@@ -20,10 +20,8 @@ class SetUpUpdateWeatherManagerWorkerImp @Inject constructor(
     @ApplicationContext private val appContext: Context) : SetUpUploadManagerWorker {
     private val listActualWorks = arrayListOf<OneTimeWorkRequest>()
     override suspend fun setUpWorkerDownloadChain(
-        listPlace: List<UpdateWeatherWMModel>,
-        coroutineScope: CoroutineScope
+        listPlace: List<UpdateWeatherWMModel>
     ) {
-        coroutineScope.launch {
             listActualWorks.clear()
             if(listPlace.isNotEmpty()){
                 listPlace.forEach {it->
@@ -47,6 +45,6 @@ class SetUpUpdateWeatherManagerWorkerImp @Inject constructor(
                 workManager.pruneWork()
                 workManager.enqueue(listActualWorks)
             }
-        }
+
     }
 }

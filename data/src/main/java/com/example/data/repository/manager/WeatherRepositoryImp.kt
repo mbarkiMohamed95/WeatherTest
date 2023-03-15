@@ -35,8 +35,9 @@ class WeatherRepositoryImp @Inject constructor(
         longitude: Double?,
         language: String?,
         currentTime: Long?,
-        cityName: String?
-    ): Flow<DataState<Boolean>> = callbackFlow {
+        cityName: String?,
+        callback: (Boolean) -> Unit
+    ) {
         weatherNetworkManager.loadWeather(
             apiKey,
             latitude,
@@ -50,14 +51,13 @@ class WeatherRepositoryImp @Inject constructor(
                 if (citys.size == cityNumber){
                     localWeatherManager.saveListWeather(remoteToLocal.mapDomainToDTO(citys))
                     delay(100)
-                    send(DataState.Success(true))
+                    callback(true)
                     citys.clear()
                 }
             } ?: kotlin.run {
-                send(DataState.Error())
+                callback(false)
             }
         }
-        awaitClose()
     }
     override suspend fun loadWeatherByCityName(
         apiKey: String,
