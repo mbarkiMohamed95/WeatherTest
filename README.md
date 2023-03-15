@@ -21,6 +21,7 @@ Tools :
 * navigation component: to ensure the navigation between fragments
 * liveData to present the data from viewModel to the view
 * compose : The detail view was impemented by the jetpack compose with the ui state proncipale 
+* test android (local data base using hilt)
   
 Dependency Injection to ensure the independence in the project i use the dependency injection design pattern .
 to manage the dependency Injection i used the HILT library
