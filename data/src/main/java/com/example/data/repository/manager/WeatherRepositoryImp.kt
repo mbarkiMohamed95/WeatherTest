@@ -46,7 +46,7 @@ class WeatherRepositoryImp @Inject constructor(
             currentTime,
             cityName
         ).collect {
-            it?.let {
+            it.let {
                 citys += it
                 if (citys.size == cityNumber){
                     localWeatherManager.saveListWeather(remoteToLocal.mapDomainToDTO(citys))
@@ -54,8 +54,6 @@ class WeatherRepositoryImp @Inject constructor(
                     callback(true)
                     citys.clear()
                 }
-            } ?: kotlin.run {
-                callback(false)
             }
         }
     }
