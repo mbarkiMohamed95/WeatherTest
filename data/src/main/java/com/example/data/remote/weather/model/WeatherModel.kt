@@ -3,7 +3,8 @@ package com.example.data.remote.weather.model
 import com.example.data.remote.weather.model.*
 import com.google.gson.annotations.SerializedName
 
-
+import kotlinx.serialization.Serializable
+@Serializable
 data class WeatherModel (
     @SerializedName("dt") val dt : Int,
     @SerializedName("coord") val coord : Coord,
@@ -16,5 +17,6 @@ data class WeatherModel (
     @SerializedName("sys") val sys : Sys,
     @SerializedName("timezone") val timezone : Int,
     @SerializedName("name") val name : String,
+    @SerializedName("id") val id : Int,
     @SerializedName("cod") val cod : Int
 )
