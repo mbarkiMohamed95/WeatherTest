@@ -74,7 +74,7 @@ class LoadWeatherUsesCaseImp @Inject constructor(
             repository.loadWeatherFromLocalAsFlow().collect {
                 when (it) {
                     is DataState.Success -> {
-                        emit(DataState.Success(it.data.map { repositoryToUi.mapDomainToDTO(it) }))
+                        emit(DataState.Success(it.data.sortedBy { it.name }.map { repositoryToUi.mapDomainToDTO(it) }))
                     }
                     is DataState.Error -> {
                         emit(it)
