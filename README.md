@@ -22,7 +22,7 @@ Tools :
 * liveData to present the data from viewModel to the view
 * compose : The detail view was impemented by the jetpack compose with the ui state proncipale 
 * test android (local data base using hilt)
-*retrofit and Ktor libraray to ensure the communication with server side
+* retrofit and Ktor libraray to ensure the communication with server side
   
 Dependency Injection to ensure the independence in the project i use the dependency injection design pattern .
 to manage the dependency Injection i used the HILT library
