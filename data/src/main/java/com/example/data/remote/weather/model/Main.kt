@@ -1,7 +1,9 @@
 package com.example.data.remote.weather.model
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Main (
 	@SerializedName("temp") val temp : Double,
 	@SerializedName("feels_like") val feels_like : Double,

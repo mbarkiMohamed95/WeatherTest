@@ -10,6 +10,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.*
+import kotlinx.serialization.json.Json
+
+import io.ktor.client.features.logging.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -74,5 +81,20 @@ object DataModule {
     @Provides
     fun provideApiService(retrofit: Retrofit): ApiServices =
         retrofit.create(ApiServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHttpClient(): HttpClient = HttpClient(Android) {
+        install(Logging) {
+            level = LogLevel.ALL
+        }
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(Json {
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
+        }
+    }
+
 
 }

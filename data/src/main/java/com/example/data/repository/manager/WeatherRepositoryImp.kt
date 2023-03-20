@@ -38,7 +38,7 @@ class WeatherRepositoryImp @Inject constructor(
         cityName: String?,
         callback: (Boolean) -> Unit
     ) {
-        weatherNetworkManager.loadWeather(
+        weatherNetworkManager.loadWeatherWithKtor(
             apiKey,
             latitude,
             longitude,
