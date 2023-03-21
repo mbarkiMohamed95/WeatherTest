@@ -48,6 +48,7 @@ class WeatherNetworkManagerImp @Inject constructor(private val apiServices: ApiS
         send(client.get {
             url(WeatherApi)
             parameter("APPID",apiKey)
+            parameter("units","metric")
             parameter("lat",latitude)
             parameter("lon",longitude)
             parameter("lang",language)
