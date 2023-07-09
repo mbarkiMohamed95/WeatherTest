@@ -12,16 +12,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.utils.DataState
 import com.example.weatherapptest.tools.location.LocationManagerInteraction
 import com.example.weathersettest.R
 import com.example.weathersettest.databinding.FragmentHomeBinding
 import com.example.weathersettest.presentation.home.action.HomeAction
+import com.example.weathersettest.tools.ui.AsyncState
 import com.example.weathersettest.tools.ui.adapater.WeatherAdapter
 import com.example.weathersettest.tools.ui.adapater.WeatherAdapterInteraction
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -67,26 +67,31 @@ class HomeFragment : Fragment(), WeatherAdapterInteraction {
         } else {
             viewModel.handleAction(HomeAction.UpdateWeather)
             viewModel.handleAction(HomeAction.LoadWeather)
-            binding.progressBar.visibility = View.VISIBLE
         }
     }
 
     private fun observeUpdateWeathers() {
-        viewModel.dataState.observe(viewLifecycleOwner) {
-            when (it) {
-                is DataState.Success -> {
-                    weatherAdapter.setWeathers(it.data)
-                    binding.progressBar.visibility = View.GONE
-                    binding.addCityBtn.isEnabled = true
-                }
-                is DataState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.addCityBtn.isEnabled = true
+        viewModel.dataState.onEach {
+            val (homeUi) = it
+            homeUi?.let {
+                when (it) {
+                    is AsyncState.Success -> {
+                        weatherAdapter.setWeathers(it.data?:return@onEach)
+                        binding.progressBar.visibility = View.GONE
+                        binding.addCityBtn.isEnabled = true
+                    }
+                    is AsyncState.Failure -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.addCityBtn.isEnabled = true
 
+                    }
+                    is AsyncState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
-                else -> {}
             }
-        }
+
+        }.launchIn(lifecycleScope)
     }
 
     private fun getLocationPermissions() {
@@ -112,17 +117,11 @@ class HomeFragment : Fragment(), WeatherAdapterInteraction {
             ) {
                 viewModel.handleAction(HomeAction.UpdateWeather)
                 viewModel.handleAction(HomeAction.LoadWeather)
-                lifecycleScope.launch {
-                    delay(1000)
-                    binding.progressBar.visibility = View.VISIBLE
-
-                }
-            }else{
+            } else {
                 viewModel.handleAction(HomeAction.UpdateWeather)
                 viewModel.handleAction(HomeAction.LoadWeather)
                 binding.progressBar.visibility = View.GONE
                 binding.addCityBtn.isEnabled = true
-
             }
         }
     }

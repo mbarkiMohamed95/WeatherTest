@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class MappingWeatherNetWorkToRepository @Inject constructor() :
     DomainDTOMappingService<WeatherModel, WeatherRepositoryModel> {
-    override fun mapDomainToDTO(domain: WeatherModel): WeatherRepositoryModel = domain.run {
+    override fun mapInputToOutput(domain: WeatherModel): WeatherRepositoryModel = domain.run {
         WeatherRepositoryModel(
             dt,
             mapCoordNetworkCoordRepModel(coord),

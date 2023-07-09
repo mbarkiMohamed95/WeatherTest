@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import com.example.weathersettest.domain.detail.model.DetailWeatherUiModel
+import com.example.domain.detail.model.DetailWeatherUiModel
 import com.example.weathersettest.tools.ui.convertTimestamp
 import com.example.weathersettest.tools.ui.loadImage
 

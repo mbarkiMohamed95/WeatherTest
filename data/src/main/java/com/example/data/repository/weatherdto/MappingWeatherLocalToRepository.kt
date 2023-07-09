@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class MappingWeatherLocalToRepository @Inject constructor() :
     DomainDTOMappingService<WeatherLocalModel, WeatherRepositoryModel> {
-    override fun mapDomainToDTO(domain: WeatherLocalModel): WeatherRepositoryModel = domain.run {
+    override fun mapInputToOutput(domain: WeatherLocalModel): WeatherRepositoryModel = domain.run {
         WeatherRepositoryModel(
             dt,
             mapCoordLocalToCoordRepModel(coordLocal),
@@ -59,5 +59,7 @@ class MappingWeatherLocalToRepository @Inject constructor() :
         sysLocal.run {
             SysRepModel(type, id, country, sunrise, sunset)
         }
+
+
 
 }

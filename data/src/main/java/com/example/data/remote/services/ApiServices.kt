@@ -15,5 +15,7 @@ interface ApiServices {
         @Query("lang") language: String?=null,
         @Query("dt") currentTime:Long?=null,
         @Query("q") cityName:String?=null
-        ):Response<WeatherModel?>
+        ):Response<WeatherModel>
+
+
 }

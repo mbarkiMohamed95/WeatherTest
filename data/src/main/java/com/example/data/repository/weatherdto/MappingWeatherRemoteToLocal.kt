@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class MappingWeatherRemoteToLocal @Inject constructor() :
     DomainDTOMappingService<WeatherModel, WeatherLocalModel> {
-    override fun mapDomainToDTO(domain: WeatherModel): WeatherLocalModel = domain.run {
+    override fun mapInputToOutput(domain: WeatherModel): WeatherLocalModel = domain.run {
         WeatherLocalModel(
             cod,
             dt,

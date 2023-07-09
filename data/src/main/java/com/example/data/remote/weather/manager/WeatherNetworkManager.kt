@@ -13,7 +13,7 @@ interface WeatherNetworkManager {
         currentTime: Long? = null,
         cityName: String? = null
 
-    ): Flow<WeatherModel?>
+    ): Result<WeatherModel>
 
     companion object {
         const val WeatherApi = "${BuildConfig.baseUrl}/data/2.5/weather"
@@ -26,5 +26,5 @@ interface WeatherNetworkManager {
         language: String? = null,
         currentTime: Long? = null,
         cityName: String? = null
-    ):  Flow<WeatherModel>
+    ):  Result<WeatherModel>
 }

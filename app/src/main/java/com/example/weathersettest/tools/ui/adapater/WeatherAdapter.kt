@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weathersettest.databinding.CityItemLayoutBinding
-import com.example.weathersettest.domain.loadWeather.model.WeatherUiModel
+import com.example.domain.loadWeather.model.WeatherUiModel
 import com.example.weathersettest.tools.ui.convertTimestamp
 import com.example.weathersettest.tools.ui.loadImage
 import dagger.hilt.android.qualifiers.ApplicationContext
