@@ -10,10 +10,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
+/**
+ * the responsibility of this class is update all local data
+ *also use the @param locationManagerInteraction to get the current location to provide the current weather
+ * i declare  listWorkManagerModel with the default data that i want to see him when i launched  the app .
+ * the listWorkManagerModel can be contain the all the local data and the current location.
+ **/
 class LoadWeatherUsesCaseImp @Inject constructor(
     private val locationManagerInteraction: LocationManagerInteraction,
     private val repository: WeatherRepository,
-    private val setUpUploadManagerWorker: SetUpUploadManagerWorker) : LoadWeatherUsesCase {
+    private val setUpUploadManagerWorker: SetUpUploadManagerWorker
+) : LoadWeatherUsesCase {
 
     override suspend operator fun invoke(coroutineScope: CoroutineScope): Int {
         val listWorkManagerModel = mutableListOf<UpdateWeatherWMModel>(

@@ -35,7 +35,14 @@ class WeatherRepositoryImp @Inject constructor(
     private var searchedWeatherCity: WeatherLocalModel? = null
     private var citys = mutableListOf<WeatherModel>()
 
-
+    /**
+     * this function used in the work manager
+     * when the app launched
+     * i create a worker for each city in local data base
+     * each worker use this function to update the data of here city
+     * when all the data updated i saved in the local data base
+     * and i create a flow to observe all the database change  to update the ui using loadWeatherFromLocalAsFlow()
+     */
     override suspend fun loadWeather(
         apiKey: String,
         cityNumber: Int?,
@@ -70,6 +77,9 @@ class WeatherRepositoryImp @Inject constructor(
 
     }
 
+    /**
+     * this function used to load the weather data using the city Name used in the search view
+     */
     override suspend fun loadWeatherByCityName(
         apiKey: String,
         language: String?,
@@ -89,6 +99,10 @@ class WeatherRepositoryImp @Inject constructor(
 
     }
 
+    /**
+     * bserve all the database change  to update the ui using this function
+     *
+     */
     override suspend fun loadWeatherFromLocalAsFlow(): Flow<Result<List<WeatherRepositoryModel>>> =
         flow {
             localWeatherManager.getAllWeathersAsFlow().collect { res ->
@@ -104,6 +118,9 @@ class WeatherRepositoryImp @Inject constructor(
             }
         }
 
+    /**
+     * i created this function to load all the saved data and provide it to the workManager to create the worker
+     */
     override suspend fun loadWeatherFromLocal(): Result<List<WeatherRepositoryModel>> {
         val res = localWeatherManager.getAllWeathers()
         return if (res.isNotEmpty()) {
@@ -113,10 +130,16 @@ class WeatherRepositoryImp @Inject constructor(
         }
     }
 
+    /**
+     * there is not a raison to load the detail from web services so i loaded it from local data base using this function
+     */
     override suspend fun loadWeatherByNameCityFromLocal(cityName: String): WeatherRepositoryModel {
         return localToRepository.mapInputToOutput(localWeatherManager.loadWeatherByNameCityFromLocal(cityName))
     }
 
+    /**
+     * this function used to save the searched weather
+     */
     override suspend fun saveWeatherCity() {
         searchedWeatherCity?.let {
             localWeatherManager.saveWeather(it)

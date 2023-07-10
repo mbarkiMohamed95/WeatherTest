@@ -29,8 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailWeatherFragment : Fragment() {
-    private var _binding: FragmentDetailWeatherBinding? = null
-    private val binding get() = _binding!!
+
     private val viewModel: DetailWeatherViewModel by viewModels()
     private var cityName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {

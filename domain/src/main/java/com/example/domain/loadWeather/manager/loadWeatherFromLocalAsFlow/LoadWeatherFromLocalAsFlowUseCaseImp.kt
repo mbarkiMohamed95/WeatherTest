@@ -10,9 +10,8 @@ import javax.inject.Inject
 class LoadWeatherFromLocalAsFlowUseCaseImp @Inject constructor(
     private val repository: WeatherRepository,
     private val repositoryToUi: MappingWeatherRepositoryToUi
-) :
-    LoadWeatherFromLocalAsFlowUseCase {
-     override fun invoke(): Flow<Result<List<WeatherUiModel>>> =
+) : LoadWeatherFromLocalAsFlowUseCase {
+    override fun invoke(): Flow<Result<List<WeatherUiModel>>> =
         flow {
             repository.loadWeatherFromLocalAsFlow().collect {
                 it.onSuccess {

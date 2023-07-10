@@ -18,6 +18,9 @@ class WeatherNetworkManagerImp @Inject constructor(
     private val client: HttpClient
 ) :
     WeatherNetworkManager {
+    /**
+     * load the weather using the Retrofit
+     */
     override suspend fun loadWeather(
         apiKey: String,
         latitude: Double?,
@@ -35,7 +38,9 @@ class WeatherNetworkManagerImp @Inject constructor(
             cityName = cityName
         )
     }
-
+    /**
+     * load the weather using the Ktor
+     */
     override suspend fun loadWeatherWithKtor(
         apiKey: String,
         latitude: Double?,

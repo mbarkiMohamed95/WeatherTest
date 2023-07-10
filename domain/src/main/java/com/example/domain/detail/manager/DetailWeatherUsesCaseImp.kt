@@ -7,6 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+/**
+ * this use Case used to map the repo Model to the Ui Model
+ */
+
 class DetailWeatherUsesCaseImp @Inject constructor(private val repository: WeatherRepository) :
     DetailWeatherUsesCase {
     override suspend fun invoke(cityName: String): Result<DetailWeatherUiModel> =
