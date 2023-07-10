@@ -5,5 +5,5 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface LoadWeatherUsesCase {
-  suspend operator fun invoke(coroutineScope: CoroutineScope)
+  suspend operator fun invoke(coroutineScope: CoroutineScope):Int
 }

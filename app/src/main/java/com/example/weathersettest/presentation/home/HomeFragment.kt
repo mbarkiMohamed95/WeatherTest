@@ -20,6 +20,7 @@ import com.example.weathersettest.tools.ui.AsyncState
 import com.example.weathersettest.tools.ui.adapater.WeatherAdapter
 import com.example.weathersettest.tools.ui.adapater.WeatherAdapterInteraction
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -50,6 +51,7 @@ class HomeFragment : Fragment(), WeatherAdapterInteraction {
             observeUpdateWeathers()
             setUpAdapter()
             setup()
+            delay(2000)
         }
         return binding.root
     }
@@ -90,7 +92,6 @@ class HomeFragment : Fragment(), WeatherAdapterInteraction {
                     }
                 }
             }
-
         }.launchIn(lifecycleScope)
     }
 
@@ -115,14 +116,13 @@ class HomeFragment : Fragment(), WeatherAdapterInteraction {
             if (grantResults.size == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED
             ) {
-                viewModel.handleAction(HomeAction.UpdateWeather)
-                viewModel.handleAction(HomeAction.LoadWeather)
+
             } else {
-                viewModel.handleAction(HomeAction.UpdateWeather)
-                viewModel.handleAction(HomeAction.LoadWeather)
                 binding.progressBar.visibility = View.GONE
                 binding.addCityBtn.isEnabled = true
             }
+            viewModel.handleAction(HomeAction.UpdateWeather)
+            viewModel.handleAction(HomeAction.LoadWeather)
         }
     }
 

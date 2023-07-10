@@ -1,8 +1,6 @@
 package com.example.weathersettest.presentation.home
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.loadWeather.manager.loadWeathe.LoadWeatherUsesCase
@@ -22,7 +20,7 @@ data class HomeUiModel(var list: AsyncState<List<WeatherUiModel>>? = null)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val loadWeatherUsesCase: LoadWeatherUsesCase,
-    private val loadWeatherFromLocalAsFlowUseCaseUsesCase: LoadWeatherFromLocalAsFlowUseCase
+    private val loadWeatherFromLocalAsFlowUseCaseUsesCase: LoadWeatherFromLocalAsFlowUseCase,
 ) :
     ViewModel() {
 
@@ -32,6 +30,8 @@ class HomeViewModel @Inject constructor(
         )
 
     val dataState: StateFlow<HomeUiModel> get() = _dataState
+
+
 
 
     fun handleAction(action: HomeAction) {
@@ -47,17 +47,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadWeather() = viewModelScope.launch {
+    private fun loadWeather() = viewModelScope.launch {
         loadWeatherUsesCase(this)
     }
 
-    private suspend fun loadWeatherFromLocalAsFlow() {
-        _dataState.update { uiSate -> uiSate.copy(AsyncState.Loading()) }
+    private fun loadWeatherFromLocalAsFlow() = viewModelScope.launch {
+        _dataState.update { uiSate -> uiSate.copy(list = AsyncState.Loading()) }
         loadWeatherFromLocalAsFlowUseCaseUsesCase().collect() {
             it.onSuccess {
-                _dataState.update { uiSate -> uiSate.copy(AsyncState.Success(it)) }
+                _dataState.update { uiSate -> uiSate.copy(list = AsyncState.Success(it)) }
             }.onFailure {
-                _dataState.update { uiSate -> uiSate.copy(AsyncState.Failure(it as Exception)) }
+                _dataState.update { uiSate -> uiSate.copy(list = AsyncState.Failure(it as Exception)) }
             }
         }
     }

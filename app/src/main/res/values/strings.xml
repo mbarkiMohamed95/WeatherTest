@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WeatherSetTest</string>
     <string name="home_title">List des villes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome">Welcome ! </string>
+    <string name="load_the_city_list">charger les informations de  météo </string>
 
 </resources>

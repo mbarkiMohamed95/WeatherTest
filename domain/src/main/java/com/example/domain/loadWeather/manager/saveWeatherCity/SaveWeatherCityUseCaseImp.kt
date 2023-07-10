@@ -8,5 +8,4 @@ class SaveWeatherCityUseCaseImp @Inject constructor(private val weatherRepositor
     override suspend fun invoke() {
         weatherRepository.saveWeatherCity()
     }
-
 }

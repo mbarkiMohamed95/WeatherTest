@@ -24,10 +24,8 @@
         android:label="fragment_splash_screen"
         tools:layout="@layout/fragment_splash_screen" >
         <action
-            android:id="@+id/action_splashScreenFragment_to_home"
-            app:destination="@id/home"
-            app:popUpTo="@+id/home"
-            app:popUpToInclusive="true"/>
+            android:id="@+id/action_splashScreenFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailWeatherFragment"
@@ -41,5 +39,14 @@
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search"
         />
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.weathersettest.presentation.welcome.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_home"
+            app:destination="@id/home" />
+    </fragment>
 
 </navigation>

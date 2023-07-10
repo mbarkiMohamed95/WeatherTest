@@ -1,6 +1,7 @@
 package com.example.data.repository.manager
 
 
+import android.util.Log
 import com.example.data.di.IoDispatcher
 import com.example.data.local.entitys.WeatherLocalModel
 import com.example.data.local.localManager.LocalWeatherManager
@@ -15,6 +16,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -31,6 +34,8 @@ class WeatherRepositoryImp @Inject constructor(
 ) : WeatherRepository {
     private var searchedWeatherCity: WeatherLocalModel? = null
     private var citys = mutableListOf<WeatherModel>()
+
+
     override suspend fun loadWeather(
         apiKey: String,
         cityNumber: Int?,
@@ -41,24 +46,28 @@ class WeatherRepositoryImp @Inject constructor(
         cityName: String?,
         callback: (Boolean) -> Unit
     ) {
-        weatherNetworkManager.loadWeatherWithKtor(
-            apiKey,
-            latitude,
-            longitude,
-            language,
-            currentTime,
-            cityName
-        ).onSuccess {
-            it.let {
-                citys += it
-                if (citys.size == cityNumber) {
-                    localWeatherManager.saveListWeather(remoteToLocal.mapInputToOutput(citys))
-                    delay(100)
-                    callback(true)
-                    citys.clear()
+        try {
+            weatherNetworkManager.loadWeatherWithKtor(
+                apiKey,
+                latitude,
+                longitude,
+                language,
+                currentTime,
+                cityName
+            ).let {
+                it.let {
+                    citys += it
+                    if (citys.size == cityNumber) {
+                        localWeatherManager.saveListWeather(remoteToLocal.mapInputToOutput(citys))
+                        callback(true)
+                        citys.clear()
+                    }
                 }
             }
+        }catch (ex:Exception){
+            Log.i("TAG", "loadWeather: ${ex.message}")
         }
+
     }
 
     override suspend fun loadWeatherByCityName(

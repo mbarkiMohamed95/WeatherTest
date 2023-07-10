@@ -14,6 +14,7 @@ import com.example.domain.tools.appConst.AppConst.LATITUDE_KEY
 import com.example.domain.tools.appConst.AppConst.LONGITUDE_KEY
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.delay
 import java.util.*
 
 @HiltWorker
@@ -51,6 +52,7 @@ class UpdateWeathersWorkManager @AssistedInject constructor(
         ){
             WorkManager.getInstance(ctx).cancelAllWork()
         }
+
        return Result.success()
     }
 }

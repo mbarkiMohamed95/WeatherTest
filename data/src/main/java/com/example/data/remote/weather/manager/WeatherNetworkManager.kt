@@ -26,5 +26,5 @@ interface WeatherNetworkManager {
         language: String? = null,
         currentTime: Long? = null,
         cityName: String? = null
-    ):  Result<WeatherModel>
+    ):  WeatherModel
 }

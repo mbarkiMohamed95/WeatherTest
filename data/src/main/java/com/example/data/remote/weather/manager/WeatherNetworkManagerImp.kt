@@ -9,6 +9,7 @@ import io.ktor.client.request.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import retrofit2.http.Query
 import javax.inject.Inject
 
@@ -42,7 +43,7 @@ class WeatherNetworkManagerImp @Inject constructor(
         language: String?,
         currentTime: Long?,
         cityName: String?
-    ): Result<WeatherModel> = Result.runCatchingResponse {
+    ): WeatherModel =
         client.get {
             url(WeatherApi)
             parameter("APPID", apiKey)
@@ -54,6 +55,5 @@ class WeatherNetworkManagerImp @Inject constructor(
             parameter("q", cityName)
 
         }
-    }
 
 }

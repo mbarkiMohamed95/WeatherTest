@@ -13,12 +13,17 @@ import com.example.weatherapptest.tools.location.LocationManagerInteraction
 import com.google.android.gms.location.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocationManager @Inject constructor (@ApplicationContext private val context: Context) :
+class LocationManager @Inject constructor(@ApplicationContext private val context: Context) :
     LocationManagerInteraction {
     private var locationManager: LocationManager? = null
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
@@ -31,7 +36,7 @@ class LocationManager @Inject constructor (@ApplicationContext private val conte
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     }
 
-    private fun getFranceLocation():Location{
+    private fun getFranceLocation(): Location {
         val location = Location("")
         location.latitude = 46.528639
         location.longitude = 2.438972
@@ -61,40 +66,45 @@ class LocationManager @Inject constructor (@ApplicationContext private val conte
         currentActivity = activity
     }
 
-    override suspend fun getCurrentLocation(
-        coroutineScope: CoroutineScope,
-        callback: suspend (Location) -> Unit
-    ) {
+    override  fun getCurrentLocation(
+        coroutineScope: CoroutineScope
+    ): Flow<Location?> = callbackFlow {
         try {
             if (checkGpsStatus()) {
                 if (!checkLocationPermissions()) {
                     val locationResult = fusedLocationProviderClient?.lastLocation
-                    locationResult?.addOnCompleteListener(currentActivity ?: return) { task ->
+                    locationResult?.addOnCompleteListener(currentActivity ?: return@callbackFlow) { task ->
                         coroutineScope.launch {
                             if (task.isSuccessful) {
                                 // Set the map's camera position to the current location of the device.
                                 task.result?.let {
-                                    callback(it)
+                                    send(it)
                                 } ?: kotlin.run {
                                     getLastKnownLocation(context)?.let { lastLocation ->
-                                        callback(lastLocation)
+                                        send(lastLocation)
                                     }
                                 }
                             } else {
-                                Log.d(TAG, "Current location is null. Using defaults.")
-                                Log.e(TAG, "Exception: %s", task.exception)
+                                getLastKnownLocation(context)?.let { lastLocation ->
+                                    send(lastLocation)
+                                }
                             }
                         }
                     }
+                } else {
+                    send(null)
                 }
+            } else {
+                send(null)
             }
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message, e)
         }
+        awaitClose()
     }
 
     private fun getLastKnownLocation(context: Context): Location? {
-        if (!checkLocationPermissions() ) {
+        if (!checkLocationPermissions()) {
             val mLocationManager =
                 context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val providers = mLocationManager.getProviders(true)
@@ -107,9 +117,9 @@ class LocationManager @Inject constructor (@ApplicationContext private val conte
                     bestLocation = location
                 }
             }
-            var ress= Location("")
-            ress.latitude=48.866667
-            ress.longitude=  2.333333
+            var ress = Location("")
+            ress.latitude = 48.866667
+            ress.longitude = 2.333333
             return bestLocation ?: ress
         } else {
             return null

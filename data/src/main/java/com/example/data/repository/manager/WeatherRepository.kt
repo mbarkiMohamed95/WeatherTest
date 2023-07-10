@@ -4,6 +4,7 @@ import com.example.data.repository.model.WeatherRepositoryModel
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
+
     suspend fun loadWeather(
         apiKey: String,
         cityNumber:Int?=null,

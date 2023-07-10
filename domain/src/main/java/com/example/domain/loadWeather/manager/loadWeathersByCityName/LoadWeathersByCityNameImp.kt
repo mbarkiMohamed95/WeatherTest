@@ -23,6 +23,4 @@ class LoadWeathersByCityNameImp @Inject constructor(
             return Result.success(listOf(repositoryToUi.mapInputToOutput(it)))
         }
     }
-
-
 }
