@@ -1,6 +1,6 @@
 package com.example.weathersettest.presentation.detail.uiState
 
-import com.example.weathersettest.domain.detail.model.DetailWeatherUiModel
+import com.example.domain.detail.model.DetailWeatherUiModel
 
 
 data class WeatherState(

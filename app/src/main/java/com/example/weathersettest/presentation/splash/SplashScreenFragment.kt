@@ -17,7 +17,7 @@ class SplashScreenFragment : Fragment() {
     ): View? {
         var view = inflater.inflate(R.layout.fragment_splash_screen, container, false)
         Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_splashScreenFragment_to_home)
+            findNavController().navigate(R.id.action_splashScreenFragment_to_welcomeFragment)
         }, 3000)
         return view
     }

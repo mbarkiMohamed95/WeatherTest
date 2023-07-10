@@ -1,28 +1,32 @@
 package com.example.weathersettest.presentation.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.utils.DataState
-import com.example.weathersettest.domain.loadWeather.manager.LoadWeatherUsesCase
-import com.example.weathersettest.domain.loadWeather.model.WeatherUiModel
+import com.example.domain.loadWeather.manager.loadWeathersByCityName.LoadWeathersByCityName
+import com.example.domain.loadWeather.manager.saveWeatherCity.SaveWeatherCityUseCase
+import com.example.domain.loadWeather.model.WeatherUiModel
+import com.example.weathersettest.presentation.home.HomeUiModel
 import com.example.weathersettest.presentation.search.action.SearchViewActions
+import com.example.weathersettest.tools.ui.AsyncState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class SearchUiModel(var list: AsyncState<List<WeatherUiModel>>? = null)
+
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val loadWeatherUsesCase: LoadWeatherUsesCase) :
+class SearchViewModel @Inject constructor(
+    private val loadWeathersByCityName: LoadWeathersByCityName,
+    private val saveWeatherCityUseCase: SaveWeatherCityUseCase
+) :
     ViewModel() {
-    private val _dataState: MutableLiveData<DataState<List<WeatherUiModel>>> =
-        MutableLiveData(
-            DataState.Idle
+    private val _dataState: MutableStateFlow<SearchUiModel> =
+        MutableStateFlow(
+            SearchUiModel()
         )
 
-    val dataState: LiveData<DataState<List<WeatherUiModel>>> get() = _dataState
-
+    val dataState: StateFlow<SearchUiModel> get() = _dataState
     suspend fun handleAction(action: SearchViewActions) {
         when (action) {
             is SearchViewActions.LoadSearchedCityWeather -> {
@@ -30,20 +34,22 @@ class SearchViewModel @Inject constructor(private val loadWeatherUsesCase: LoadW
                     loadWeatherByCityName(action.cityName)
                 }
             }
-            is  SearchViewActions.SavePlace->{
+            is SearchViewActions.SavePlace -> {
                 saveWeatherCity()
             }
         }
 
     }
 
-    private suspend fun loadWeatherByCityName(cityName: String) {
-        loadWeatherUsesCase.loadWeathersByCityName(cityName).onEach {
-            _dataState.value = it
-        }.launchIn(viewModelScope)
+    private fun loadWeatherByCityName(cityName: String) = viewModelScope.launch {
+        loadWeathersByCityName(cityName).onSuccess {
+            _dataState.update { uiState -> uiState.copy(AsyncState.Success(it)) }
+        }.onFailure {
+            _dataState.update { uiState -> uiState.copy(AsyncState.Failure(it as Exception)) }
+        }
     }
 
     private suspend fun saveWeatherCity() {
-        loadWeatherUsesCase.saveWeatherCity()
+        saveWeatherCityUseCase()
     }
 }

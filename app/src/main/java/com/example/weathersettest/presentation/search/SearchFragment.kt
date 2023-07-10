@@ -16,9 +16,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.utils.DataState
 import com.example.weathersettest.presentation.search.action.SearchViewActions
 import com.example.weathersettest.databinding.FragmentSearchBinding
+import com.example.weathersettest.tools.ui.AsyncState
 import com.example.weathersettest.tools.ui.adapater.WeatherAdapter
 import com.example.weathersettest.tools.ui.adapater.WeatherAdapterInteraction
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,6 +26,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -73,7 +75,7 @@ class SearchFragment : BottomSheetDialogFragment(), WeatherAdapterInteraction {
     ): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.closeSearchBtn.setOnClickListener {
-                findNavController().navigateUp()
+            findNavController().navigateUp()
         }
         setUpAdapter()
         setUpEditText()
@@ -91,18 +93,25 @@ class SearchFragment : BottomSheetDialogFragment(), WeatherAdapterInteraction {
     }
 
     private fun observeWeathers() {
-        viewModel.dataState.observe(viewLifecycleOwner) {
-            when (it) {
-                is DataState.Success -> {
-                    weatherAdapter.setWeathers(it.data)
-                    binding.progressBar.visibility = View.GONE
+        viewModel.dataState.onEach {
+            val (searchUiModel) = it
+            searchUiModel?.let {
+                when (it) {
+                    is AsyncState.Failure -> {
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    is AsyncState.Success -> {
+                        weatherAdapter.setWeathers(it.data ?: return@onEach)
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    is AsyncState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
-                is DataState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                }
-                else -> {}
             }
-        }
+
+        }.launchIn(lifecycleScope)
+
     }
 
     private fun setUpEditText() {
@@ -116,6 +125,7 @@ class SearchFragment : BottomSheetDialogFragment(), WeatherAdapterInteraction {
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 binding.progressBar.visibility = View.VISIBLE
             }

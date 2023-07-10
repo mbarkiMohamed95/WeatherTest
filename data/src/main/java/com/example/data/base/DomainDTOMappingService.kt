@@ -1,11 +1,12 @@
 package com.example.data.base
 
 
-interface DomainDTOMappingService<Domain,DTO> {
+interface DomainDTOMappingService<Input:Any,Output:Any> {
 
-    fun mapDomainToDTO(domain : Domain) : DTO
+    fun mapInputToOutput(input: Input) : Output
 
-     fun mapDomainToDTO(domainlist : List<Domain>) : List<DTO> = domainlist.map { domain->
-        mapDomainToDTO(domain)
+     fun mapInputToOutput(inputList : List<Input >) : List<Output> = inputList.map { input->
+        mapInputToOutput(input)
     }
+
 }

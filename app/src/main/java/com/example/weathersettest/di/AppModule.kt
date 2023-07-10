@@ -1,7 +1,7 @@
 package com.example.weathersettest.di
 
 import com.example.weatherapptest.tools.location.LocationManagerInteraction
-import com.example.weathersettest.tools.location.LocationManager
+import com.example.domain.tools.location.LocationManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
