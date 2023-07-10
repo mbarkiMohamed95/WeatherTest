@@ -12,7 +12,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
+/**
+ * this class create the workers and launched in the work Manager
+ */
 class SetUpUpdateWeatherManagerWorkerImp @Inject constructor(
     @ApplicationContext private val appContext: Context
 ) : SetUpUploadManagerWorker {
@@ -20,7 +22,6 @@ class SetUpUpdateWeatherManagerWorkerImp @Inject constructor(
     override suspend fun setUpWorkerDownloadChain(
         listPlace: List<UpdateWeatherWMModel>
     ) {
-        var delay = 0L
         listActualWorks.clear()
         if (listPlace.isNotEmpty()) {
             listPlace.forEach { it ->
@@ -33,13 +34,12 @@ class SetUpUpdateWeatherManagerWorkerImp @Inject constructor(
                 data.putString(CITY_NAME_KEY, it.cityName ?: "")
                 val synchroWorker = OneTimeWorkRequestBuilder<UpdateWeathersWorkManager>()
                     .setConstraints(constraints)
-                    .setInitialDelay(delay, TimeUnit.SECONDS)
+                    .setInitialDelay(1, TimeUnit.SECONDS)
                     .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 5, TimeUnit.SECONDS)
                     .setInputData(data.build())
                     .addTag("updateWeather")
                     .build()
                 listActualWorks.add(synchroWorker)
-                delay += 10L
             }
             var workManager = WorkManager.getInstance(appContext)
             workManager.pruneWork()
