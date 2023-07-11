@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -46,15 +47,15 @@ class DetailWeatherFragment : Fragment() {
                 cityName?.let {
                     viewModel.handleAction(DetailWeatherActions.LoadDetail(it))
                 }
-                setUpView()
+                WeatherAppTheme {
+                    setUpView()
+                }
             }
         }
 
     }
-
     @Composable
     fun setUpView() {
-        WeatherAppTheme {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -84,6 +85,11 @@ class DetailWeatherFragment : Fragment() {
                     )
                 }
             }
-        }
+    }
+
+    @Preview
+    @Composable
+    fun setPreview(){
+        setUpView()
     }
 }

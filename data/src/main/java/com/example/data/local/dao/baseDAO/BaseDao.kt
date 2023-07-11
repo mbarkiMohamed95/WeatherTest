@@ -3,7 +3,7 @@ package com.example.data.local.dao.baseDAO
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Update
 
 @Dao
@@ -24,7 +24,7 @@ interface BaseDao<T> {
 
 
    @Insert(onConflict = REPLACE)
-    suspend fun insertList(obj:List<T?>?):List<Long>
+    suspend fun insertList(obj:List<T>):List<Long>
 
 
     /**

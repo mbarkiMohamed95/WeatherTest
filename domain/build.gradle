@@ -42,7 +42,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     testImplementation 'junit:junit:4.13.2'
@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation project(path: ':data')
     //workManger
-    def work_version = "2.7.1"
+    def work_version = "2.8.1"
     implementation "androidx.work:work-runtime:$work_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation "androidx.work:work-rxjava2:$work_version"
@@ -63,7 +63,7 @@ dependencies {
     annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0'
 
     // Hilt
-    implementation 'com.google.dagger:hilt-android:2.43.2'
+    implementation 'com.google.dagger:hilt-android:2.44'
     kapt 'com.google.dagger:hilt-compiler:2.43.2'
     // For instrumentation tests
     androidTestImplementation  'com.google.dagger:hilt-android-testing:2.43.2'
@@ -72,6 +72,6 @@ dependencies {
     testImplementation 'com.google.dagger:hilt-android-testing:2.43.2'
     kaptTest 'com.google.dagger:hilt-compiler:2.43.2'
 
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
 }
